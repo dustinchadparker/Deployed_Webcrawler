@@ -15,15 +15,20 @@ router.get("/", async (req, res, next) => {
       const page = await browser.newPage(); //creates new page
   
       //LOGS IN with username/password
-      await page.type("#username", this.state.email, { delay: 10 });
-      await page.type("#password", this.state.password, { delay: 10 });
+      await page.type("#username", req.query.username, { delay: 10 });
+      await page.type("#password", req.query.password, { delay: 10 });
       page.click("input.button1");
   
       await page.waitForNavigation({ waitUntil: "domcontentloaded" });
   
-      let stringData = "";
+      let data = {
+          price: [],
+          comment: [],
+          time: [],
+          index: [],
+      }
       //loops through pages
-      while (pageStartNums < parseInt(this.state.pages)) {
+      while (pageStartNums < parseInt(req.query.pages)) {
         //navigates to page and waits for DOMContent
         await page.goto(
           `https://forum.median-xl.com/tradegold.php?sort_id=0&start=${pageStartNums *
@@ -52,25 +57,18 @@ router.get("/", async (req, res, next) => {
       
         //Will cycle through arrays of data and store in stringData
         for (let i = 0; i < price.length; i++) {
-            stringData +=
-            "\n\n" +
-            i +
-            ":::" +
-            "\n" +
-            "Coins: " +
-            price[i] +
-            "\n" +
-            "Comment: " +
-            comment[i] +
-            "\n" +
-            "Time: " +
-            time[i];
+            data.index.push([i]);
+            data.comment.push(comment[i]);
+            data.price.push(price[i]);
+            data.time.push(time[i]);
+
         }
         pageStartNums++;
       }
   
       //closes page; change page to 'browser' if you want it to close browser when done
       browser.close();
+      return data;
   } catch (e) {
     console.log(e);
     res.sendStatus(500);

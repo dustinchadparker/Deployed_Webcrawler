@@ -24,7 +24,7 @@ interface IBlogPreviewCardProps {
   price: string;
   comment: string;
   time: string;
-  index: number;
+  index: string;
 }
 
 interface IBlogPreviewCardState {}
