@@ -1,5 +1,4 @@
 import * as React from "react";
-import puppeteer from "puppeteer";
 import BlogPreviewCard from "./BlogPreviewCard";
 
 export default class Alldata extends React.Component<
@@ -100,10 +99,10 @@ interface IAlldataState {
   password: string;
   email: string;
   data: {
-    index: Array<String>,
-    comment: Array<String>,
-    price: Array<String>,
-    time: Array<String>,
+    index: Array<string>,
+    comment: Array<string>,
+    price: Array<string>,
+    time: Array<string>,
   }
   pages: string;
 }
