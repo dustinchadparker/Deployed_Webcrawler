@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
+    console.log(req.query.password);
     //launches a new browser window
     const browser = await puppeteer.launch({
       headless: false

@@ -14,7 +14,7 @@ export default class Alldata extends React.Component<
         comment: [],
         time: []
       },
-      email: "",
+      username: "",
       password: "",
       pages: ""
     };
@@ -25,18 +25,13 @@ export default class Alldata extends React.Component<
   onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //GOTTA CHANGE THIS TO FETCH THE DATAAA
-    await fetch(
-      `/?username=${this.state.email}?password=${this.state.password}?pages=${
+    let data = await fetch(
+      `/pupRouter/?username=${this.state.username}?password=${this.state.password}?pages=${
         this.state.pages
       }`
-    )
-      .then(function(response) {
-        return response;
-      })
-      .then(function(myJson) {
-        console.log(JSON.stringify(myJson));
-      });
+    );
+    console.log("HEY");
+      console.log(JSON.stringify(data));
 
     //Will cycle through arrays of data and store in stringData
     for (let i = 0; i < this.state.data.price.length; i++) {
@@ -61,10 +56,10 @@ export default class Alldata extends React.Component<
           <label>Username</label>
           <input
             type="text"
-            value={this.state.email}
+            value={this.state.username}
             className="input-group my-1 p-1"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              this.setState({ email: e.target.value })
+              this.setState({ username: e.target.value })
             }
           />
           <label>Password</label>
@@ -96,7 +91,7 @@ interface IAlldataProps {}
 
 interface IAlldataState {
   password: string;
-  email: string;
+  username: string;
   data: {
     index: Array<string>;
     comment: Array<string>;
