@@ -20,7 +20,7 @@ router.get("/", async (req, res, next) => {
 
     await page.waitForNavigation({ waitUntil: "domcontentloaded" });
 
-    let data = {
+    let data:any = {
       price: [],
       comment: [],
       time: [],

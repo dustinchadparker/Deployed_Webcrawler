@@ -9,6 +9,8 @@ export default class BlogPreviewCard extends React.Component<
 
     return (
       <div className="input-group mb-3">
+      
+      {console.log(price)}
         <div className="input-group-prepend">
           <span className="input-group-text">{index}</span>
           <span className="input-group-text">{price}</span>

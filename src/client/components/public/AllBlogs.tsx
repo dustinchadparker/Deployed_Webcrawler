@@ -12,7 +12,7 @@ export default class Alldata extends React.Component<
         price: [],
         index: [],
         comment: [],
-        time: [],
+        time: []
       },
       email: "",
       password: "",
@@ -26,31 +26,30 @@ export default class Alldata extends React.Component<
     e.preventDefault();
 
     //GOTTA CHANGE THIS TO FETCH THE DATAAA
-    fetch(`/?username=${this.state.email}?password=${this.state.password}?pages=${this.state.pages}`)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      console.log(JSON.stringify(myJson));
-    });
-    
+    await fetch(
+      `/?username=${this.state.email}?password=${this.state.password}?pages=${
+        this.state.pages
+      }`
+    )
+      .then(function(response) {
+        return response;
+      })
+      .then(function(myJson) {
+        console.log(JSON.stringify(myJson));
+      });
 
-    
-      //Will cycle through arrays of data and store in stringData
-      for (let i = 0; i < this.state.data.price.length; i++) {
-        
-        <section className="row my-3">
-          <BlogPreviewCard
-            index={this.state.data.index[i]}
-            price={this.state.data.price[i]}
-            comment={this.state.data.comment[i]}
-            time={this.state.data.time[i]}
-          />
-        </section>;
-      }
-     
-  }
-
+    //Will cycle through arrays of data and store in stringData
+    for (let i = 0; i < this.state.data.price.length; i++) {
+      <section className="row my-3">
+        <BlogPreviewCard
+          index={this.state.data.index[i]}
+          price={this.state.data.price[i]}
+          comment={this.state.data.comment[i]}
+          time={this.state.data.time[i]}
+        />
+      </section>;
+    }
+  };
 
   render() {
     return (
@@ -59,7 +58,7 @@ export default class Alldata extends React.Component<
           className="form-group mt-5 border border-primary rounded p-3 shadow-lg bg-info"
           onSubmit={this.onSubmit}
         >
-          <label>Email For Site</label>
+          <label>Username</label>
           <input
             type="text"
             value={this.state.email}
@@ -68,9 +67,9 @@ export default class Alldata extends React.Component<
               this.setState({ email: e.target.value })
             }
           />
-          <label>Password For Site</label>
+          <label>Password</label>
           <input
-            type="text"
+            type="password"
             value={this.state.password}
             className="input-group my-1 p-1"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -86,7 +85,7 @@ export default class Alldata extends React.Component<
               this.setState({ pages: e.target.value })
             }
           />
-          <button className="btn btn-secondary mt-2 shadow">Email Me!</button>
+          <button className="btn btn-secondary mt-2 shadow">Go Mining!</button>
         </form>
       </main>
     );
@@ -99,10 +98,10 @@ interface IAlldataState {
   password: string;
   email: string;
   data: {
-    index: Array<string>,
-    comment: Array<string>,
-    price: Array<string>,
-    time: Array<string>,
-  }
+    index: Array<string>;
+    comment: Array<string>;
+    price: Array<string>;
+    time: Array<string>;
+  };
   pages: string;
 }
