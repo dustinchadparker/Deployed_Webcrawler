@@ -39,9 +39,10 @@ export default class Alldata extends React.Component<
     
       //Will cycle through arrays of data and store in stringData
       for (let i = 0; i < this.state.data.price.length; i++) {
+        
         <section className="row my-3">
           <BlogPreviewCard
-            index={this.state.data.index}
+            index={this.state.data.index[i]}
             price={this.state.data.price[i]}
             comment={this.state.data.comment[i]}
             time={this.state.data.time[i]}
