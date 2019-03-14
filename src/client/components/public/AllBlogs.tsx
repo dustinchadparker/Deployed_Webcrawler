@@ -8,12 +8,11 @@ export default class Alldata extends React.Component<
   constructor(props: IAlldataProps) {
     super(props);
     this.state = {
-      data: {
-        price: [],
-        index: [],
-        comment: [],
-        time: []
-      },
+      price: [],
+      index: [],
+      comment: [],
+      time: [],
+
       username: "",
       password: "",
       pages: ""
@@ -24,26 +23,22 @@ export default class Alldata extends React.Component<
 
   onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    let data = await fetch(
-      `/pupRouter/?username=${this.state.username}?password=${this.state.password}?pages=${
-        this.state.pages
-      }`
-    );
-    console.log("HEY");
-      console.log(JSON.stringify(data));
-
-    //Will cycle through arrays of data and store in stringData
-    for (let i = 0; i < this.state.data.price.length; i++) {
-      <section className="row my-3">
-        <BlogPreviewCard
-          index={this.state.data.index[i]}
-          price={this.state.data.price[i]}
-          comment={this.state.data.comment[i]}
-          time={this.state.data.time[i]}
-        />
-      </section>;
-    }
+    await fetch(
+      `/pupRouter/?username=${this.state.username}&password=${
+        this.state.password
+      }&pages=${this.state.pages}`
+    )
+      .then(response => response.json())
+      .then(data => {
+        data.index.forEach((item: string, index: number) => {
+          this.setState({ index: [item] });
+          this.setState({ price: [data.price[index]] });
+          this.setState({
+            comment: [data.comment[index]]
+          });
+          this.setState({ time: [data.time[index]] });
+        });
+      });
   };
 
   render() {
@@ -82,6 +77,18 @@ export default class Alldata extends React.Component<
           />
           <button className="btn btn-secondary mt-2 shadow">Go Mining!</button>
         </form>
+
+        {this.state.index.forEach((item: string, index: number) => {
+          console.log(this.state.price[index]);
+          return (
+          <BlogPreviewCard
+            index={item}
+            price={this.state.price[index]}
+            comment={this.state.comment[index]}
+            time={this.state.time[index]}
+          />
+          );
+        })}
       </main>
     );
   }
@@ -92,11 +99,9 @@ interface IAlldataProps {}
 interface IAlldataState {
   password: string;
   username: string;
-  data: {
-    index: Array<string>;
-    comment: Array<string>;
-    price: Array<string>;
-    time: Array<string>;
-  };
+  index: Array<string>;
+  comment: Array<string>;
+  price: Array<string>;
+  time: Array<string>;
   pages: string;
 }

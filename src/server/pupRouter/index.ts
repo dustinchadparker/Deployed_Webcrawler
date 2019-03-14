@@ -1,11 +1,10 @@
 import * as express from "express";
-import puppeteer from "puppeteer";
+const puppeteer = require("puppeteer");
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    console.log(req.query.password);
     //launches a new browser window
     const browser = await puppeteer.launch({
       headless: false
@@ -13,7 +12,9 @@ router.get("/", async (req, res, next) => {
     let pageStartNums = 0;
 
     const page = await browser.newPage(); //creates new page
-
+    await page.goto("https://forum.median-xl.com/ucp.php?mode=login", {
+      waitUntil: "domcontentloaded"
+    });
     //LOGS IN with username/password
     await page.type("#username", req.query.username, { delay: 10 });
     await page.type("#password", req.query.password, { delay: 10 });
@@ -21,7 +22,7 @@ router.get("/", async (req, res, next) => {
 
     await page.waitForNavigation({ waitUntil: "domcontentloaded" });
 
-    let data:any = {
+    let data: any = {
       price: [],
       comment: [],
       time: [],
@@ -41,17 +42,23 @@ router.get("/", async (req, res, next) => {
       // await page.waitFor(1000);
 
       //gets all prices
-      let price = await page.$$eval("div.coins.coins-embed", el =>
-        el.map(i => i.innerText)
+      let price = await page.$$eval(
+        "div.coins.coins-embed",
+        (el: { map: (arg0: (i: any) => any) => void }) =>
+          el.map((i: { innerText: any }) => i.innerText)
       );
 
       //gets all comments
-      let comment = await page.$$eval("tr > td:nth-last-of-type(2)", el =>
-        el.map(i => i.innerText)
+      let comment = await page.$$eval(
+        "tr > td:nth-last-of-type(2)",
+        (el: { map: (arg0: (i: any) => any) => void }) =>
+          el.map((i: { innerText: any }) => i.innerText)
       );
 
-      let time = await page.$$eval("td:nth-child(5)", el =>
-        el.map(i => i.innerText)
+      let time = await page.$$eval(
+        "td:nth-child(5)",
+        (el: { map: (arg0: (i: any) => any) => void }) =>
+          el.map((i: { innerText: any }) => i.innerText)
       );
 
       //Will cycle through arrays of data and store in stringData
@@ -66,10 +73,10 @@ router.get("/", async (req, res, next) => {
 
     //closes page; change page to 'browser' if you want it to close browser when done
     browser.close();
-    return data;
+
+    res.send(JSON.stringify(data));
   } catch (e) {
-    console.log(e);
-    res.sendStatus(500);
+    throw e;
   }
 });
 
