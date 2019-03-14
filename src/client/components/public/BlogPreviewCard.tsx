@@ -21,10 +21,10 @@ export default class BlogPreviewCard extends React.Component<
 }
 
 interface IBlogPreviewCardProps {
-  price: string;
+  price: number;
   comment: string;
   time: string;
-  index: string;
+  index: number;
 }
 
 interface IBlogPreviewCardState {}
