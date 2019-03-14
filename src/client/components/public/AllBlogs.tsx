@@ -8,10 +8,7 @@ export default class Alldata extends React.Component<
   constructor(props: IAlldataProps) {
     super(props);
     this.state = {
-      price: [],
-      index: [],
-      comment: [],
-      time: [],
+      items: [],
 
       username: "",
       password: "",
@@ -30,18 +27,18 @@ export default class Alldata extends React.Component<
     )
       .then(response => response.json())
       .then(data => {
-        data.index.forEach((item: string, index: number) => {
-          this.setState({ index: [item] });
-          this.setState({ price: [data.price[index]] });
-          this.setState({
-            comment: [data.comment[index]]
-          });
-          this.setState({ time: [data.time[index]] });
-        });
+        const items = data.index.map((_index: any, index: number) => ({
+          price: data.price[index],
+          time: data.time[index],
+          comment: data.comment[index]
+        }));
+
+        this.setState({ items });
       });
   };
 
   render() {
+    console.log(this.state);
     return (
       <main className="container">
         <form
@@ -78,15 +75,14 @@ export default class Alldata extends React.Component<
           <button className="btn btn-secondary mt-2 shadow">Go Mining!</button>
         </form>
 
-        {this.state.index.forEach((item: string, index: number) => {
-          console.log(this.state.price[index]);
+        {this.state.items.map((item: Item, index: number) => {
           return (
-          <BlogPreviewCard
-            index={item}
-            price={this.state.price[index]}
-            comment={this.state.comment[index]}
-            time={this.state.time[index]}
-          />
+            <BlogPreviewCard
+              index={index}
+              price={item.price}
+              comment={item.comment}
+              time={item.time}
+            />
           );
         })}
       </main>
@@ -99,9 +95,12 @@ interface IAlldataProps {}
 interface IAlldataState {
   password: string;
   username: string;
-  index: Array<string>;
-  comment: Array<string>;
-  price: Array<string>;
-  time: Array<string>;
+  items: Item[];
   pages: string;
+}
+
+interface Item {
+  price: number;
+  time: string;
+  comment: string;
 }
