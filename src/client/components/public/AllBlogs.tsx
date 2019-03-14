@@ -20,6 +20,8 @@ export default class Alldata extends React.Component<
   onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    //GOTTA CHANGE THIS TO FETCH THE DATAAA
+
     //launches a new browser window
     const browser = await puppeteer.launch({
       headless: false
